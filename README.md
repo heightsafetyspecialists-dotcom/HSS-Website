@@ -1,25 +1,42 @@
-# Height Safety Specialists Website
+document.addEventListener('DOMContentLoaded', () => {
+  const menuToggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.main-nav');
+  const year = document.querySelector('#year');
 
-This repository contains a landing page inspired by the example reference at https://height-safety-example.vercel.app/.
+  if (year) {
+    year.textContent = new Date().getFullYear();
+  }
 
-## Run locally
+  if (menuToggle && nav) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('is-open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
 
-Open `index.html` directly in a browser, or serve the folder with a local static file server.
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 
-Example:
+  const contactForm = document.querySelector('.contact-form');
 
-```bash
-python3 -m http.server 8000
-```
-
-Then visit http://localhost:8000
-
-## Files
-
-- `index.html` — page structure and content
-- `styles.css` — design system and responsive styling
-- `script.js` — small interactive mobile navigation script
-
-## Deployment
-
-This is a static site and can be deployed to Vercel, Netlify, GitHub Pages or any static hosting provider.
+  if (contactForm) {
+    contactForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const button = contactForm.querySelector('button[type="submit"]');
+      if (button) {
+        const originalText = button.textContent;
+        button.textContent = 'Request Sent';
+        button.disabled = true;
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.disabled = false;
+          contactForm.reset();
+        }, 2200);
+      }
+    });
+  }
+});
